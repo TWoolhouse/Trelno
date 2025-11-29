@@ -18,7 +18,7 @@
 		"@types/showdown": "^2.0.0",
 		"busboy": "^1.6.0",
 		"cross-env": "^7.0.3",
-		"nuxt": "3.2.0",
+		"nuxt": "3.19.0",
 		"pinia": "^2.0.30",
 		"prisma": "^4.10.1",
 		"prisma-erd-generator": "^1.2.5",
