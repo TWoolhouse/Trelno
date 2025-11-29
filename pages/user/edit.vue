@@ -1,11 +1,13 @@
-<script setup>
+<script setup lang="ts">
 import { logout } from "@/types/user"
 
 definePageMeta({
 	name: "Profile",
 })
 
+const colorMode = useColorMode()
 const inputRef = ref(null)
+const lightValueSelection = ref<HTMLSelectElement>(null)
 const modalActive = ref(false)
 // const passModalActive = ref(false)
 const invModalActive = ref(false)
@@ -35,7 +37,8 @@ async function createInvite() {
 		})
 		email.value = ""
 		check.style.display = "block"
-		check.innerHTML = `Invite your colleague with this link: <br> <span>/register/${result.data.value}</span>`
+		const url = new URL(location.href)
+		check.innerHTML = `Invite your colleague with this link: <br> <a href=\"${url.protocol}//${url.host}/register/${result.data.value}\">${url.protocol}//${url.host}/register/${result.data.value}</a>`
 	}
 }
 
@@ -45,22 +48,10 @@ function clearCheck() {
 	check.style.display = "none"
 }
 
+console.log(colorMode.preference, colorMode.value)
+
 function setLight() {
-	const index = document.getElementsByClassName("theme")[0].selectedIndex
-	const page = document.getElementsByTagName("html")[0]
-	switch (index) {
-		case 0:
-			break
-		case 1:
-			page.classList.remove("theme-dark")
-			page.classList.add("theme-light")
-			break
-		case 2:
-			page.classList.remove("theme-light")
-			page.classList.add("theme-dark")
-			break
-		default:
-	}
+	colorMode.preference = lightValueSelection.value!.value
 }
 </script>
 
@@ -106,8 +97,10 @@ function setLight() {
 		<template #content>
 			<h2>Logout</h2>
 			<p>Are you sure you want to logout?</p>
-			<a href="/login">
-				<button class="logout-button" @click="logout()">Logout</button></a
+			<a @click.prevent href="/login">
+				<button class="logout-button" @click="logout(), navigateTo('/login')">
+					Logout
+				</button></a
 			>
 		</template>
 	</Moodal>
@@ -125,8 +118,14 @@ function setLight() {
 			</div>
 		</template> -->
 		<template #theme>
-			<select @change="setLight()" name="theme" class="theme">
-				<option value="default">Default</option>
+			<select
+				@change="setLight()"
+				ref="lightValueSelection"
+				name="theme"
+				class="theme"
+				:value="colorMode.preference"
+			>
+				<option value="system">Default</option>
 				<option value="light">Light</option>
 				<option value="dark">Dark</option>
 			</select>

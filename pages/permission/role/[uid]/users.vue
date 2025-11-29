@@ -28,12 +28,12 @@ const availableUsers = $computed(
 )
 
 const modalAssign = useModal()
-const modalAssignSelection = ref<User[]>([])
+const modalAssignSelection = ref<UserR[]>([])
 
 async function assignUsers() {
 	modalAssign.hide()
 	const users = modalAssignSelection.value.map(u => u.uid)
-	role.value!.users.push(...users)
+	role.value!.users.push(...modalAssignSelection.value)
 	await $fetch(`/api/role/${route.params.uid}/users`, {
 		method: "PUT",
 		body: {

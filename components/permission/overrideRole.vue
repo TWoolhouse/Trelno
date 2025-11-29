@@ -18,7 +18,11 @@ const { data: override } = await useFetch("/api/permission/override", {
 		roleUid: props.roleUid,
 	},
 })
-usePageName(`${override.value![props.table].name} Role Permissions`)
+usePageName(
+	`${
+		override.value![props.table].name ?? override.value![props.table].title
+	} Role Permissions`,
+)
 
 let allow = $ref<Permission>(override.value!.allow)
 let deny = $ref<Permission>(override.value!.deny)

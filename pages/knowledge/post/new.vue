@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { Post, Topic } from ".prisma/client"
-import { has, Permission, permissions } from "~~/types/permission"
+import {
+	has,
+	Permission,
+	permissions,
+	permissionsUser,
+} from "~~/types/permission"
 
 definePageMeta({
 	name: "New Post",
@@ -162,7 +167,7 @@ async function upload() {
 					<option value="">Select a Topic...</option>
 					<option
 						:value="TOPIC_CREATE_NEW"
-						v-if="has(permissions(currentUser!.roles), Permission.Topic_Create)"
+						v-if="has(permissions(permissionsUser(currentUser!.roles)), Permission.Topic_Create)"
 					>
 						New Topic...
 					</option>
@@ -172,7 +177,7 @@ async function upload() {
 							v-if="
 								has(
 									permissions(
-										currentUser!.roles,
+										permissionsUser(currentUser!.roles),
 										topic.overrideRoles,
 										topic.overrideUsers,
 									),

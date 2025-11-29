@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { emailDomain } from "@/types/user"
 import { formData2Object } from "@/types/generic"
+import { hashPassword } from "~~/types/password"
 definePageMeta({
 	layout: "loginreg",
 	name: "Registration",
@@ -20,6 +21,7 @@ async function submit() {
 
 	let test = {}
 	const body = formData2Object(data)
+	body.password = hashPassword(email.value!, body.password)
 
 	try {
 		const result = await $fetch("/api/register", { method: "POST", body })
@@ -55,6 +57,7 @@ async function submit() {
 			id="Password"
 			name="password"
 			autocomplete="new-password"
+			pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{12,}$"
 			required
 		/>
 		<label for="confirmPassword">Confirm Password:</label>

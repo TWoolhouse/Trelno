@@ -20,8 +20,6 @@ header-includes: |
 
 <!--
 
-
-
 To compile: pandoc report.md -o report.pdf
 
 https://pandoc.org/installing.html
